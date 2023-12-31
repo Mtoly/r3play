@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "sqlite"
+  url          = "file:./musicInfo.db"
+  relationMode = "prisma"
+}
+
+model Album {
+  id                Int                 @id @unique
+  neteaseId         Int                 @unique
+  name              String              
+  neteaseName       String              
+  artistName        String              
+  neteaseArtistName String              
+  copyright         String?             
+  editorialVideo    String?             
+  artwork           String?             
+  editorialNote     AlbumEditorialNote?
+}
+
+model AlbumEditorialNote {
+  id    Int     @id @unique
+  album Album   @relation(fields: [id], references: [id])
+  en_US String? @map("en_US") 
+  zh_CN String? @map("zh_CN") 
+}
+
+model Artist {
+  id             Int        @id @unique
+  neteaseId      Int        @unique
+  name           String     
+  artwork        String?    
+  editorialVideo String?    
+  artistBio      ArtistBio?
+}
+
+model ArtistBio {
+  id     Int     @id @unique
+  artist Artist  @relation(fields: [id], references: [id])
+  en_US  String? @map("en_US") 
+  zh_CN  String? @map("zh_CN") 
+}
